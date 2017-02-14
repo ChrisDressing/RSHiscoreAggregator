@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 readIn = open('Initial.txt', 'r')
-readOut = open('Total.txt', 'w')
+readOut = open('/var/www/html/index.html', 'w')
 data = readIn.read().strip()
 playerData = data.split(" ")
 total = -1
@@ -26,4 +26,4 @@ for line in playerData:
 		x+=1
 	total = total - int(xp)
 	print(playerName + " " + str(total))
-	readOut.write(playerName + "," + str(total) + "\n")
+	readOut.write(playerName + "," + str(total) + "<br>")
