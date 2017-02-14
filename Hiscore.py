@@ -23,6 +23,6 @@ for name in playerList:
 			total += int(xp)
 		x+=1
 
-	out.write(name + " " + str(total) + "\n")
+	out.write(name + "," + str(total) + " ")
 f.close()
 out.close()
