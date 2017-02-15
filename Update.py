@@ -34,7 +34,10 @@ for line in playerData:
 totalxp, playerNames =  zip(*sorted(zip(totalxp, playerNames)))
 temp = len(totalxp)-1
 rank = 1
+html = "<!DOCTYPE html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\"></head><body><h1>Welcome to the Casual Escape Test Competition!</h1><p>"
 while temp >= 0:
-        readOut.write(str(rank) + ". " + playerNames[temp] + " - " + str(totalxp[temp]) + "<br>")
+        html+= str(rank) + ". " + playerNames[temp] + " - " + str(totalxp[temp]) + "<br>"
         temp-=1
         rank +=1
+html+="</p></body></html>"
+readOut.write(html)
