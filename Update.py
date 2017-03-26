@@ -3,7 +3,7 @@ from lxml import html
 import requests
 from bs4 import BeautifulSoup
 
-readIn = open('/home/pi/RSHiscoreAggregator/Initial.txt', 'r')
+readIn = open('Initial.txt', 'r')
 readOut = open('/var/www/html/index.html', 'w')
 data = readIn.read().strip()
 playerData = data.split(" ")
