@@ -3,8 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 
 
-f = open('Players.txt', 'r')
-out = open('Initial.txt', 'w')
+f = open('/root/RSHiscoreAggregator/Players.txt', 'r')
+out = open('/root/RSHiscoreAggregator/Initial.txt', 'w')
 playerList = f.read().split()
 
 for name in playerList:
@@ -18,12 +18,14 @@ for name in playerList:
         x = 1
         total = 0
 	#1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
-        while x < 8:
-                if x != 6:
-                        rank, level, xp = statList[x].split(',')
-                        total += int(xp)
-                x+=1
-
+        try:
+        	while x < 27:
+                	if x == 15:
+                        	rank, level, xp = statList[x].split(',')
+                        	total += int(xp)
+                	x+=1
+        except:
+               print("There was a problem with the current player")
         out.write(name + "," + str(total) + " ")
 f.close()
 out.close()

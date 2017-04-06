@@ -1,15 +1,19 @@
-
+import locale
+import time
+import datetime
 from lxml import html
 import requests
 from bs4 import BeautifulSoup
-
-readIn = open('Initial.txt', 'r')
-readOut = open('/var/www/html/index.html', 'w')
+ts = time.time()
+locale.setlocale(locale.LC_ALL, '')
+readIn = open('/root/RSHiscoreAggregator/Initial.txt', 'r')
+#readOut = open('/var/www/html/index.html', 'w')
 data = readIn.read().strip()
 playerData = data.split(" ")
 total = -1
 totalxp = []
 playerNames = []
+
 for line in playerData:
         try:
                 playerName, xp = line.split(",")
@@ -23,25 +27,34 @@ for line in playerData:
                 x = 1
                 total = 0
                 #1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
-                while x < 8:
-                        if x != 6:
+                while x < 30:
+                        if x == 15:
                                 rank, level, curXP = statList[x].split(',')
                                 total += int(curXP)
+                                break;
                         x+=1
                 total = total - int(xp)
                 totalxp.append(total)
                 print(playerName + " " + str(total))
                 #readOut.write(playerName + "," + str(total) + "<br>")
         except:
-                print("There was an error with a user")
+                print("There was an error with the user: " + playerName)
+                totalxp.append(-1);
                 
 totalxp, playerNames =  zip(*sorted(zip(totalxp, playerNames)))
 temp = len(totalxp)-1
 rank = 1
-html = "<!DOCTYPE html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\"></head><body><h1>Welcome to the Casual Escape Test Competition!</h1><p>"
+html = "<!DOCTYPE html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\"><meta http-equiv=\"Cache-control\" content=\"no-cache\"></head><body><h1>Welcome to the Casual Escape Mining Competition!</h1><p>"
+html+="<br><i><b>Note: This tracker updates once every 30 minutes or so, if it's not, please let Chris D know</b></i><br><i><b>If the tracker doesn't seem like it is updating, right click on the page and click \"Reload Frame\"</i></b><br>"
+
+#ts = time.time()
+st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+html += "Last updated (UTC): " + st + "</p><br><table align=\"center\"><tr><th>Rank</th><th>Player</th><th>XP Gained</th></tr>";
 while temp >= 0:
-        html+= str(rank) + ". " + playerNames[temp] + " - " + str(totalxp[temp]) + "<br>"
+        html+= "<tr><td>"+str(rank)+"</td><td>"+ playerNames[temp]+"</td><td>" + str(format(totalxp[temp], "n")) + "</td></tr>"
         temp-=1
         rank +=1
-html+="</p><br><i><b>Note: This tracker updates once every 15 minutes or so, if it's not, please let Chris D know</b></i></body></html>"
+html+="</table></body></html>"
+#html+="</p><br><i><b>Note: This tracker updates once every 15 minutes or so, if it's not, please let Chris D know</b></i></body></html>"
+readOut = open('/var/www/html/index.html', 'w')
 readOut.write(html)
