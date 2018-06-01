@@ -18,10 +18,10 @@ playerNames = []
 for line in playerData:
     try:
         playerName, xp = line.split(",")
-        playerNames.append(playerName)
         if xp == "D":
-            totalxp.append("D")
+            print(playerName + " has an issue with the hiscores")
         else:
+            playerNames.append(playerName)
             page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + playerName)
             data = page.text
             soup = BeautifulSoup(data, "lxml")
