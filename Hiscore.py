@@ -18,7 +18,7 @@ for name in playerList:
     x = 0
     total = 0
     # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
-    completed = False
+    disq = False
     attempts = 0
     try:
         while x < 27:
@@ -40,7 +40,12 @@ for name in playerList:
             x += 1
     except:
         print("There was a problem with the current player " + name + "... Trying again")
-    out.write(name + "," + str(total) + " ")
+        disq = True
+    if disq is True:
+        out.write(name + "," + "D" + " ")
+        disq = False
+    else:
+        out.write(name + "," + str(total) + " ")
 f.close()
 out.close()
 '''
