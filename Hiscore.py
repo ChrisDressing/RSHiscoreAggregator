@@ -25,7 +25,7 @@ for name in playerList:
             if x == 18:  # or x == 19:
                 rank, level, xp = statList[x].split(',')
                 print(xp)
-                while xp <= 0 and attempts < 3:
+                while int(xp) <= 0 and attempts < 3:
                     attempts += 1
                     time.sleep(3)
                     page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
@@ -40,8 +40,7 @@ for name in playerList:
             x += 1
     except:
         print("There was a problem with the current player " + name + "... Trying again")
-
-out.write(name + "," + str(total) + " ")
+    out.write(name + "," + str(total) + " ")
 f.close()
 out.close()
 '''
