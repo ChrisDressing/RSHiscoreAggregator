@@ -27,7 +27,7 @@ for name in playerList:
                 print(xp)
                 while int(xp) <= 0 and attempts < 3:
                     attempts += 1
-                    time.sleep(3)
+                    time.sleep(1)
                     page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
                     data = page.text
                     soup = BeautifulSoup(data, "lxml")
