@@ -20,28 +20,28 @@ for name in playerList:
     # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
     completed = False
     attempts = 0
-    while completed is False and attempts < 3:
-        try:
-            while x < 27:
-                if x == 18:  # or x == 19:
+    try:
+        while x < 27:
+            if x == 18:  # or x == 19:
+                rank, level, xp = statList[x].split(',')
+                print(xp)
+                while xp <= 0 and attempts < 3:
+                    attempts += 1
+                    time.sleep(3)
+                    page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
+                    data = page.text
+                    soup = BeautifulSoup(data, "lxml")
+                    stats = str(soup.p.extract())
+                    stats = stats.strip("<p>").strip("</p>")
+                    statList = stats.split()
                     rank, level, xp = statList[x].split(',')
                     print(xp)
-                    total += int(xp)
-                    if total >= 0:
-                        completed = True
-                x += 1
+                total += int(xp)
+            x += 1
+    except:
+        print("There was a problem with the current player " + name + "... Trying again")
 
-        except:
-            print("There was a problem with the current player " + name + "... Trying again")
-            attempts += 1
-            time.sleep(3)
-            page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
-            data = page.text
-            soup = BeautifulSoup(data, "lxml")
-            stats = str(soup.p.extract())
-            stats = stats.strip("<p>").strip("</p>")
-            statList = stats.split()
-    out.write(name + "," + str(total) + " ")
+out.write(name + "," + str(total) + " ")
 f.close()
 out.close()
 '''
