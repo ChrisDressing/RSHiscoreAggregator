@@ -64,7 +64,7 @@ html += "<br><i><b>Note: This tracker updates once every 30 minutes or so, if it
 st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 html += "Last updated (UTC): " + st + "</p><br><table align=\"center\"><tr><th>Rank</th><th colspan = '2'>Player</th><th>XP Gained</th></tr>";
 while temp >= 0:
-    html += "<tr><td>" + str(rank) + "</td><td><img src=http://services.runescape.com/m=avatar-rs/" + playerNames[temp] + "/chat.gif></td><td>" + playerNames[temp].replace("_", " ") + "</td><td>" + str(
+    html += "<tr><td>" + str(rank) + "</td><td><img src=http://services.runescape.com/m=avatar-rs/" + playerNames[temp] + "/chat.gif></td><td href=http://www.runeclan.com/user/" + playerNames[temp] + ">" + playerNames[temp].replace("_", " ") + "</td><td>" + str(
         format(totalxp[temp], "n")) + "</td></tr>"
     temp -= 1
     rank += 1
