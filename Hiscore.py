@@ -22,7 +22,7 @@ for name in playerList:
     attempts = 0
     try:
         while x < 27:
-            if x == 18:  # or x == 19:
+            if x == 15:  # or x == 19:
                 rank, level, xp = statList[x].split(',')
                 print(xp)
                 while int(xp) <= 0 and attempts < 3:

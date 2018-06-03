@@ -32,7 +32,7 @@ for line in playerData:
             total = 0
             # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
             while x < 30:
-                if x == 18:  # or x == 19:
+                if x == 15:  # or x == 19:
                     rank, level, curXP = statList[x].split(',')
                     total += int(curXP)
                     # break;
@@ -57,14 +57,14 @@ html = """<!DOCTYPE html><head><script>
   ga('create', 'UA-103248346-1', 'auto');
   ga('send', 'pageview');
 
-</script><link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\"><meta http-equiv=\"Cache-control\" content=\"no-cache\"></head><body><h1>Welcome to the Casual Oasis Thieving Competition!</h1><p>"""
+</script><link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\"><meta http-equiv=\"Cache-control\" content=\"no-cache\"></head><body><h1>Welcome to the Casual Oasis Mining Competition!</h1><p>"""
 html += "<br><i><b>Note: This tracker updates once every 30 minutes or so, if it's not, please let Chris D know</b></i><br>"
 
 # ts = time.time()
 st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-html += "Last updated (UTC): " + st + "</p><br><table align=\"center\"><tr><th>Rank</th><th>Player</th><th>XP Gained</th></tr>";
+html += "Last updated (UTC): " + st + "</p><br><table align=\"center\"><tr><th>Rank</th><th colspan = '2'>Player</th><th>XP Gained</th></tr>";
 while temp >= 0:
-    html += "<tr><td><img>http://services.runescape.com/m=avatar-rs/" + playerNames[temp] + "/chat.gif</img></td><td>" + str(rank) + "</td><td>" + playerNames[temp].replace("_", " ") + "</td><td>" + str(
+    html += "<tr><td>" + str(rank) + "</td><td><img src=http://services.runescape.com/m=avatar-rs/" + playerNames[temp] + "/chat.gif></td><td>" + playerNames[temp].replace("_", " ") + "</td><td>" + str(
         format(totalxp[temp], "n")) + "</td></tr>"
     temp -= 1
     rank += 1

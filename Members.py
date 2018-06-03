@@ -22,6 +22,6 @@ with fileinput.input('/root/RSHiscoreAggregator/members_lite.ws', openhook=filei
         else:
             temp=1
         #print(fileinput.filename())
-g+="MadClikr\n"
+#g+="MadClikr\n"
 out.write(g)
 out.close()
