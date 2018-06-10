@@ -70,5 +70,5 @@ while temp >= 0:
     rank += 1
 html += "</table></body></html>"
 # html+="</p><br><i><b>Note: This tracker updates once every 15 minutes or so, if it's not, please let Chris D know</b></i></body></html>"
-readOut = open('/var/www/html/index.html', 'w')
+readOut = open('/var/www/html/develop/standings.html', 'w')
 readOut.write(html)
