@@ -1,0 +1,238 @@
+<!-- 
+	Author:  MadClikr
+	Last Updated:  June 8, 2018
+	Description:  An updated version of the Casual Oasis Tracking Application.
+-->
+
+<script>
+// This script toggles the text for the Standings, About Us, and Rules sections
+// When a link is selected, the "current-tab" class will be added/removed as necessary
+// This script is a modified version of the code found here:
+// https://www.w3schools.com/howto/howto_js_tabs.asp
+function openTab(evt, tabName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("tab");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("nav-link");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" current-tab", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.firstElementChild.className += " current-tab";
+}
+</script>
+
+<html>
+	<head>
+		<title>Casual Oasis Competition Tracker</title>
+		<style>
+			body
+			{
+				background-image: url("del3_purple2.jpg");
+				background-color: #1E0360;
+				padding-bottom: 5px;
+			}
+			a /* links */
+			{
+				color: #1E0360;
+			}
+			h1 /* page header */
+			{
+				font-size: 25px;
+			}
+			h2 /* section headers */
+			{
+				font-size: 20px;
+			}
+			#container /* The entire middle secion of the Web site */
+			{
+				background-color: #EEE;
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+				width: 1000px;
+				min-height: 100%;
+			overflow-y: auto;
+			overflow-x: hidden;
+			border: 3px solid #1E0360
+			
+			}
+			#container-banner /* The entire middle secion of the Web site */
+			{
+			background-color: #EEE;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			width: 1000px;
+			}
+			
+			#banner /* The Casual Oasis banner image */
+			{
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+				width: 1000px;
+			}
+			#column1 /* Contains an image for the current competition */
+			{
+				width: 200px;
+				padding: 20px;
+				float: left;
+			}
+			#column2 /* This is the main text section */
+			{
+				padding: 0 20px 20px 0;
+				float: left;
+				text-align: left;
+				width: 600px;
+			}
+			
+			/* CSS for the Nav Bar */
+			.nav-link-start /* The leading bottom border */
+			{
+				float: left;
+				width: 20px;
+				text-align:center;
+				border-bottom: 1px solid black;
+				padding: 2px;
+				margin-bottom:10px;
+			}
+			.nav-link /* Standings, About Us, Rules */
+			{
+				float: left;
+				width: 100px;
+				text-align:center;
+				border-bottom: 1px solid black;
+				padding: 2px;
+				margin-bottom:10px;
+			}		
+			.current-tab /* The currently selected tab */
+			{
+				border: 1px solid black;
+				border-bottom: 0px;
+			}
+			.nav-link-end /* The trailing bottom border */
+			{
+				float: left;
+				width: 250px;
+				text-align:center;
+				border-bottom: 1px solid black;
+				padding: 2px;
+				margin-bottom:10px;
+			}	
+			#Standings, #About, #Rules /* Fixes wrapping issues */
+			{
+				clear: both;
+			}
+			
+			/* CSS for the Standings Section */
+			.rank
+			{
+				width: 75px;
+				text-align: left;
+			}
+			.player
+			{
+				min-width: 100px;
+				text-align: left;
+			}
+			img.avatar
+			{
+				height: 32px;
+				width: 32px;
+			}
+			.xpgained
+			{
+				width: 100px;
+				text-align: right;
+			}
+			
+			/* CSS for the About Us section */
+			.highlight
+			{
+				color: #5D0E79;
+				font-weight: bold;
+				font-style: italic;
+			}
+			.bordered {
+			width: 200px;
+			height: 100px;
+			border: 10px inset grey;
+			}
+		</style>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script>
+		  $(function(){
+		  $("#standings").load("standings.html");
+		  });
+		</script> 
+	</head>
+	<body>
+	  <div id="container-banner">
+	    <img id="banner" src="banner.png" alt="Casual Oasis">
+	    </div>
+	  <div id="container">
+	    <div id="column1"></div>
+			<div id="column2">
+				<p>
+				
+				 <div class="nav">
+				 	<div class="nav-link-start">&nbsp;</div>
+					<a href="javascript:void(0)" onclick="openTab(event, 'standings');">
+						<div class="nav-link current-tab">Standings</div>
+					</a>
+					<a href="javascript:void(0)" onclick="openTab(event, 'About');">
+						<div class="nav-link">About Us</div>
+					</a>
+					<a href="javascript:void(0)" onclick="openTab(event, 'Rules');">
+						<div class="nav-link">Rules</div>
+					</a>
+					<div class="nav-link-end">&nbsp;</div>
+				</div> 
+
+				 <div id="standings" class="tab" style="display:block">
+				 </div>
+
+				<div id="About" class="tab" style="display:none">
+					<h2>About Us</h2>
+					<p class="highlight">Oasis: noun -something serving as a refuge, relief, or pleasant change from what is usual, annoying, difficult, etc.</p>
+					<p><a href="http://casualoasis.clanwebsite.com" target="_new">Casual Oasis</a> is a social clan dedicated to providing a supportive, fun, and drama free environment for its members and run by an experienced team of friendly admin. We are a family of mature, like minded individuals coming together to enjoy the time we all spend in Runescape. We welcome both irons and non-irons alike. Our goal is to grow not through numbers, but through expanding relationship that keep our family strong while casually enjoying the game of Runescape. We have numerous diverse events throughout the week and everyone will be able to find something that they enjoy to participate in, including minigame events, Saturday Night Bossing, penguin hunting, and week long skill competitions.  We also offer weekly teaching masses for more difficult bosses where you can learn them safely with direction from experienced players over <a href="https://discordapp.com/invite/9em5Km3" target="_new">Discord</a>. Nothing is mandatory and is offered just for fun. We have truly awesome members!
+					<p>Feel free to come guest with us anytime! Kick your shoes off and maybe stay awhile! If you have any questions you would like to ask about the clan, feel free to join the clan chat as a guest or pm any of our admin listed below.
+				</div>
+
+				<div id="Rules" class="tab" style="display:none">
+					<h2>Rules</h2>
+					<p>The Competition will begin at reset on the first Monday of every month and end at reset the following Monday.  Do NOT change your name during this time or you will be disqualified.
+		
+					<p>You must log out at reset on the day the Competition begins in order to qualify.
+ 
+					<p>Minigames are not allowed. We will rely on the honor system on this.
+
+					<p>Warbands are not allowed.
+ 
+					<p>Distractions & Diversions are allowed.
+ 
+					<p>You can't buy extra "spins" during the Competition to gain bonus xp.
+ 
+					<p>Prizes go to 1st, 2nd, and 3rd place as well as most levels gained:
+ 
+					<p>1st:  $5 million
+					<br>2nd:  $3 million
+					<br>3rd:  $1 million
+					<p>(Prizes will be set and may be different for each competition)
+ 
+					<p>If a prize is forfeited, it does not affect the other standings. That money will not be awarded to someone else.
+ 
+					<p>If a prize winner is disqualified, the standings move up one and the prize will be awarded to the place holder below him/her. And the other prizes will trickle down as well. In other words, if the first place winner is disqualified, then the second place winner moves to first, third to second, and forth to third.
+
+					<p>CasualOasis.com is the official tracker for the xp gained in the competition.
+
+					<p>Important Addendum: With Jagex having added dummies in so many different skills we are banning their use in all competitions.
+						
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
