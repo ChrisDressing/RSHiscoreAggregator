@@ -17,6 +17,7 @@ for name in playerList:
     statList = stats.split()
     x = 0
     total = 0
+    totalLevels = 0
     # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
     disq = False
     attempts = 0
@@ -37,6 +38,7 @@ for name in playerList:
                     rank, level, xp = statList[x].split(',')
                     print(xp)
                 total += int(xp)
+                totalLevels += int(level)
             x += 1
     except:
         print("There was a problem with the current player " + name + "... Trying again")
@@ -45,7 +47,7 @@ for name in playerList:
         out.write(name + "," + "D" + " ")
         disq = False
     else:
-        out.write(name + "," + str(total) + " ")
+        out.write(name + "," + str(total) + "," + str(totalLevels) + " ")
 f.close()
 out.close()
 '''

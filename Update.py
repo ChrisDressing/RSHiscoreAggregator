@@ -14,10 +14,10 @@ playerData = data.split(" ")
 total = -1
 totalxp = []
 playerNames = []
-
+totalLevels = []
 for line in playerData:
     try:
-        playerName, xp = line.split(",")
+        playerName, xp, levels = line.split(",")
         if xp == "D":
             print(playerName + " has an issue with the hiscores")
         else:
@@ -30,22 +30,26 @@ for line in playerData:
             statList = stats.split()
             x = 0
             total = 0
+            curlevel = 0
             # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
             while x < 30:
                 if x == 15:  # or x == 19:
                     rank, level, curXP = statList[x].split(',')
                     total += int(curXP)
+                    curlevel += int(level)
                     # break;
                 x += 1
             total = total - int(xp)
+            totalL = curlevel - int(levels)
             totalxp.append(total)
-            print(playerName + " " + str(total))
+            totalLevels.append(totalL)
+            print(playerName + " " + str(total) + " " + str(totalL))
             # readOut.write(playerName + "," + str(total) + "<br>")
     except:
         print("There was an error with the user: " + playerName)
         totalxp.append(-1);
 
-totalxp, playerNames = zip(*sorted(zip(totalxp, playerNames)))
+totalxp, playerNames, totalLevels = zip(*sorted(zip(totalxp, playerNames, totalLevels)))
 temp = len(totalxp) - 1
 rank = 1
 html = """<!DOCTYPE html><head><script>
@@ -62,13 +66,13 @@ html += "<br><i><b>Note: This tracker updates once every 30 minutes or so, if it
 
 # ts = time.time()
 st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-html += "Last updated (UTC): " + st + "</p><br><table align=\"center\"><tr><th>Rank</th><th colspan = '2'>Player</th><th>XP Gained</th></tr>";
+html += "Last updated (UTC): " + st + "</p><br><table align=\"center\"><tr><th>Rank</th><th colspan = '2'>Player</th><th>XP Gained</th><th>Levels Gained</th></tr>";
 while temp >= 0:
     html += "<tr><td>" + str(rank) + "</td><td><img src=http://services.runescape.com/m=avatar-rs/" + playerNames[temp] + "/chat.gif></td><td><a href=http://www.runeclan.com/user/" + playerNames[temp] + ">" + playerNames[temp].replace("_", " ") + "</a></td><td>" + str(
-        format(totalxp[temp], "n")) + "</td></tr>"
+        format(totalxp[temp], "n")) + "</td><td>" + str(totalLevels[temp]) + "</td></tr>"
     temp -= 1
     rank += 1
 html += "</table></body></html>"
 # html+="</p><br><i><b>Note: This tracker updates once every 15 minutes or so, if it's not, please let Chris D know</b></i></body></html>"
-readOut = open('/var/www/html/develop/standings.html', 'w')
+readOut = open('/var/www/html/standings.html', 'w')
 readOut.write(html)
