@@ -7,7 +7,7 @@ page = requests.get('http://services.runescape.com/m=clan-hiscores/members_lite.
 fw.write(page.text)
 fw.close()
 f = open('/root/RSHiscoreAggregator/members_lite.ws', encoding = "ISO-8859-1")
-out = open('Players.txt', 'w')
+out = open('/root/RSHiscoreAggregator/Players.txt', 'w')
 #playerList = f.read().replace(" ", "_").split()
 temp = 0
 g = ""

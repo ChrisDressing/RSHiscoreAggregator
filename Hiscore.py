@@ -44,7 +44,7 @@ for name in playerList:
         print("There was a problem with the current player " + name + "... Trying again")
         disq = True
     if disq is True:
-        out.write(name + "," + "D" + " ")
+        out.write(name + "," + "D,D" + " ")
         disq = False
     else:
         out.write(name + "," + str(total) + "," + str(totalLevels) + " ")

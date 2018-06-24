@@ -4,6 +4,7 @@ import datetime
 from lxml import html
 import requests
 from bs4 import BeautifulSoup
+import sys
 
 ts = time.time()
 locale.setlocale(locale.LC_ALL, '')
@@ -33,7 +34,7 @@ for line in playerData:
             curlevel = 0
             # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
             while x < 30:
-                if x == 15:  # or x == 19:
+                if x == 16:  # or x == 19:
                     rank, level, curXP = statList[x].split(',')
                     total += int(curXP)
                     curlevel += int(level)
@@ -46,8 +47,8 @@ for line in playerData:
             print(playerName + " " + str(total) + " " + str(totalL))
             # readOut.write(playerName + "," + str(total) + "<br>")
     except:
-        print("There was an error with the user: " + playerName)
-        totalxp.append(-1);
+        print(sys.last_traceback + "There was an error with the user: " + playerName)
+#        totalxp.append(-1);
 
 totalxp, playerNames, totalLevels = zip(*sorted(zip(totalxp, playerNames, totalLevels)))
 temp = len(totalxp) - 1
@@ -68,7 +69,7 @@ html += "<br><i><b>Note: This tracker updates once every 30 minutes or so, if it
 st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 html += "Last updated (UTC): " + st + "</p><br><table align=\"center\"><tr><th>Rank</th><th colspan = '2'>Player</th><th>XP Gained</th><th>Levels Gained</th></tr>";
 while temp >= 0:
-    html += "<tr><td>" + str(rank) + "</td><td><img src=http://services.runescape.com/m=avatar-rs/" + playerNames[temp] + "/chat.gif></td><td><a href=http://www.runeclan.com/user/" + playerNames[temp] + ">" + playerNames[temp].replace("_", " ") + "</a></td><td>" + str(
+    html += "<tr><td>" + str(rank) + "</td><td><img class=\"avatar\" src=http://services.runescape.com/m=avatar-rs/" + playerNames[temp] + "/chat.gif></td><td><a href=http://www.runeclan.com/user/" + playerNames[temp] + ">" + playerNames[temp].replace("_", " ") + "</a></td><td>" + str(
         format(totalxp[temp], "n")) + "</td><td>" + str(totalLevels[temp]) + "</td></tr>"
     temp -= 1
     rank += 1
