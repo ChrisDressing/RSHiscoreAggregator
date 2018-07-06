@@ -22,7 +22,6 @@ for line in playerData:
         if xp == "D":
             print(playerName + " has an issue with the hiscores")
         else:
-            playerNames.append(playerName)
             page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + playerName)
             data = page.text
             soup = BeautifulSoup(data, "lxml")
@@ -32,9 +31,8 @@ for line in playerData:
             x = 0
             total = 0
             curlevel = 0
-            # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
             while x < 30:
-                if x == 16:  # or x == 19:
+                if x == 25:  # or x == 19:
                     rank, level, curXP = statList[x].split(',')
                     total += int(curXP)
                     curlevel += int(level)
@@ -42,12 +40,15 @@ for line in playerData:
                 x += 1
             total = total - int(xp)
             totalL = curlevel - int(levels)
+            playerNames.append(playerName)
             totalxp.append(total)
             totalLevels.append(totalL)
             print(playerName + " " + str(total) + " " + str(totalL))
             # readOut.write(playerName + "," + str(total) + "<br>")
     except:
-        print(sys.last_traceback + "There was an error with the user: " + playerName)
+        print("Error")
+        continue
+        #print(sys.last_traceback + "There was an error with the user: " + playerName)
 #        totalxp.append(-1);
 
 totalxp, playerNames, totalLevels = zip(*sorted(zip(totalxp, playerNames, totalLevels)))
@@ -62,7 +63,7 @@ html = """<!DOCTYPE html><head><script>
   ga('create', 'UA-103248346-1', 'auto');
   ga('send', 'pageview');
 
-</script><link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\"><meta http-equiv=\"Cache-control\" content=\"no-cache\"></head><body><h1>Welcome to the Casual Oasis Mining Competition!</h1><p>"""
+</script></head><body><h1>Welcome to the Casual Oasis Dungeoneering Competition!</h1><p>"""
 html += "<br><i><b>Note: This tracker updates once every 30 minutes or so, if it's not, please let Chris D know</b></i><br>"
 
 # ts = time.time()
