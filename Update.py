@@ -32,7 +32,7 @@ for line in playerData:
             total = 0
             curlevel = 0
             while x < 30:
-                if x == 25:  # or x == 19:
+                if x == 1 or x == 2 or x == 3 or x == 4 or x == 5 or x == 7:
                     rank, level, curXP = statList[x].split(',')
                     total += int(curXP)
                     curlevel += int(level)
@@ -63,7 +63,7 @@ html = """<!DOCTYPE html><head><script>
   ga('create', 'UA-103248346-1', 'auto');
   ga('send', 'pageview');
 
-</script></head><body><h1>Welcome to the Casual Oasis Dungeoneering Competition!</h1><p>"""
+</script></head><body><h1>Welcome to the Alright Combat Competition!</h1><p>"""
 html += "<br><i><b>Note: This tracker updates once every 30 minutes or so, if it's not, please let Chris D know</b></i><br>"
 
 # ts = time.time()
