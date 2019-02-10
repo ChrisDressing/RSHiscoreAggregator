@@ -6,9 +6,35 @@ import requests
 from bs4 import BeautifulSoup
 import sys
 
+skillsList = [1]
+inFileName = "Initial.txt"
+outFileName = "standings.html"
+competitionName = "Mining"
+if sys.argv[1] != "":
+    if sys.argv[1] == "artisan":
+        skillsList = [8,10,12,13,14,16,21,23]
+        inFileName = "ArtisanInitial.txt"
+        outFileName = "artisanstandings.html"
+        competitionName = "Artisan Skills"
+    if sys.argv[1] == "combatant":
+        skillsList = [1,2,3,4,5,6,7,24]
+        inFileName = "CombatantInitial.txt"
+        outFileName = "combatantstandings.html"
+        competitionName = "Combatant Skills"
+    if sys.argv[1] == "gatherer":
+        skillsList = [9,11,15,20,22,26]
+        inFileName = "GathererInitial.txt"
+        outFileName = "gathererstandings.html"
+        competitionName = "Gatherer Skills"
+    if sys.argv[1] == "support":
+        skillsList = [17,18,19,25]
+        inFileName = "SupportInitial.txt"
+        outFileName = "supportstandings.html"
+        competitionName = "Support Skills"
+
 ts = time.time()
 locale.setlocale(locale.LC_ALL, '')
-readIn = open('/root/RSHiscoreAggregator/Initial.txt', 'r')
+readIn = open('/root/RSHiscoreAggregator/'+inFileName, 'r')
 # readOut = open('/var/www/html/index.html', 'w')
 data = readIn.read().strip()
 playerData = data.split(" ")
@@ -31,13 +57,10 @@ for line in playerData:
             x = 0
             total = 0
             curlevel = 0
-            while x < 30:
-                if x == 1 or x == 2 or x == 3 or x == 4 or x == 5 or x == 7:
-                    rank, level, curXP = statList[x].split(',')
-                    total += int(curXP)
-                    curlevel += int(level)
-                    # break;
-                x += 1
+            for x in skillsList:
+                rank, level, curXP = statList[x].split(',')
+                total += int(curXP)
+                curlevel += int(level)
             total = total - int(xp)
             totalL = curlevel - int(levels)
             playerNames.append(playerName)
@@ -63,7 +86,7 @@ html = """<!DOCTYPE html><head><script>
   ga('create', 'UA-103248346-1', 'auto');
   ga('send', 'pageview');
 
-</script></head><body><h1>Welcome to the Alright Combat Competition!</h1><p>"""
+</script></head><body><h1>Welcome to the Alright """ + competitionName +""" Competition!</h1><p>"""
 html += "<br><i><b>Note: This tracker updates once every 30 minutes or so, if it's not, please let Chris D know</b></i><br>"
 
 # ts = time.time()
@@ -76,5 +99,5 @@ while temp >= 0:
     rank += 1
 html += "</table></body></html>"
 # html+="</p><br><i><b>Note: This tracker updates once every 15 minutes or so, if it's not, please let Chris D know</b></i></body></html>"
-readOut = open('/var/www/html/standings.html', 'w')
+readOut = open('/var/www/html/'+outFileName, 'w')
 readOut.write(html)
