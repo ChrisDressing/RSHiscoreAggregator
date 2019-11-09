@@ -3,28 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import sys
+import concurrent.futures
 
-skillsList = [0]
-outFileName = "Initial.txt"
-if sys.argv[1] != "":
-    if sys.argv[1] == "artisan":
-        skillsList = [8,10,12,13,14,16,21,23]
-        outFileName = "ArtisanInitial.txt"
-    if sys.argv[1] == "combatant":
-        skillsList = [1,2,3,4,5,6,7,24]
-        outFileName = "CombatantInitial.txt"
-    if sys.argv[1] == "gatherer":
-        skillsList = [9,11,15,20,22,26]
-        outFileName = "GathererInitial.txt"
-    if sys.argv[1] == "support":
-        skillsList = [17,18,19,25]
-        outFileName = "SupportInitial.txt"
 
-f = open('/root/RSHiscoreAggregator/Players.txt', 'r')
-out = open('/root/RSHiscoreAggregator/'+outFileName, 'w')
-playerList = f.read().split()
-
-for name in playerList:
+def process(name):
     print(name)
     page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
     data = page.text
@@ -60,11 +42,43 @@ for name in playerList:
             print("There was a problem with the current player " + name + "... Trying again")
             disq = True
         if disq is True:
-            out.write(name + "," + "D,D" + " ")
             print("Possible inactive player: " + name)
-            disq = False
+            return name + "," + "D,D" + " "
         else:
-            out.write(name + "," + str(total) + "," + str(totalLevels) + " ")
+            return name + "," + str(total) + "," + str(totalLevels) + " "
+
+
+skillsList = [0]
+outFileName = "Initial.txt"
+if sys.argv[1] != "":
+    if sys.argv[1] == "artisan":
+        skillsList = [8,10,12,13,14,16,21,23]
+        outFileName = "ArtisanInitial.txt"
+    if sys.argv[1] == "combatant":
+        skillsList = [1,2,3,4,5,6,7,24]
+        outFileName = "CombatantInitial.txt"
+    if sys.argv[1] == "gatherer":
+        skillsList = [9,11,15,20,22,26]
+        outFileName = "GathererInitial.txt"
+    if sys.argv[1] == "support":
+        skillsList = [17,18,19,25,27]
+        outFileName = "SupportInitial.txt"
+
+f = open('/root/RSHiscoreAggregator/Players.txt', 'r')
+out = open('/root/RSHiscoreAggregator/'+outFileName, 'w')
+playerList = f.read().split()
+
+finalStr = ''
+with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+    future_process = {executor.submit(process, element): element for element in playerList}
+    for future in concurrent.futures.as_completed(future_process):
+        try:
+            exceptionThing = future_process[future]
+            finalStr += future.result()
+        except Exception as e:
+            print("ERROR:" + str(e))
+            continue
+out.write(finalStr)
 f.close()
 out.close()
 '''

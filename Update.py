@@ -5,6 +5,30 @@ from lxml import html
 import requests
 from bs4 import BeautifulSoup
 import sys
+import concurrent.futures
+
+def process(line):
+        playerName, xp, levels = line.split(",")
+        if xp == "D":
+            print(playerName + " has an issue with the hiscores")
+        else:
+            page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + playerName)
+            data = page.text
+            soup = BeautifulSoup(data, "lxml")
+            stats = str(soup.p.extract())
+            stats = stats.strip("<p>").strip("</p>")
+            statList = stats.split()
+            x = 0
+            total = 0
+            curlevel = 0
+            for x in skillsList:
+                rank, level, curXP = statList[x].split(',')
+                total += int(curXP)
+                curlevel += int(level)
+            total = total - int(xp)
+            totalL = curlevel - int(levels)
+            print(playerName + " " + str(total) + " " + str(totalL))
+            return playerName, total, totalL
 
 skillsList = [0]
 inFileName = "Initial.txt"
@@ -27,7 +51,7 @@ if sys.argv[1] != "":
         outFileName = "gathererstandings.html"
         competitionName = "Gatherer Skills"
     if sys.argv[1] == "support":
-        skillsList = [17,18,19,25]
+        skillsList = [17,18,19,25,27]
         inFileName = "SupportInitial.txt"
         outFileName = "supportstandings.html"
         competitionName = "Support Skills"
@@ -35,44 +59,25 @@ if sys.argv[1] != "":
 ts = time.time()
 locale.setlocale(locale.LC_ALL, '')
 readIn = open('/root/RSHiscoreAggregator/'+inFileName, 'r')
-# readOut = open('/var/www/html/index.html', 'w')
-data = readIn.read().strip()
+data = readIn.reac().strip()
 playerData = data.split(" ")
 total = -1
 totalxp = []
 playerNames = []
 totalLevels = []
-for line in playerData:
-    try:
-        playerName, xp, levels = line.split(",")
-        if xp == "D":
-            print(playerName + " has an issue with the hiscores")
-        else:
-            page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + playerName)
-            data = page.text
-            soup = BeautifulSoup(data, "lxml")
-            stats = str(soup.p.extract())
-            stats = stats.strip("<p>").strip("</p>")
-            statList = stats.split()
-            x = 0
-            total = 0
-            curlevel = 0
-            for x in skillsList:
-                rank, level, curXP = statList[x].split(',')
-                total += int(curXP)
-                curlevel += int(level)
-            total = total - int(xp)
-            totalL = curlevel - int(levels)
-            playerNames.append(playerName)
-            totalxp.append(total)
-            totalLevels.append(totalL)
-            print(playerName + " " + str(total) + " " + str(totalL))
-            # readOut.write(playerName + "," + str(total) + "<br>")
-    except:
-        print("Error")
-        continue
-        #print(sys.last_traceback + "There was an error with the user: " + playerName)
-#        totalxp.append(-1);
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+    future_process = {executor.submit(process, element): element for element in playerData}
+    for future in concurrent.futures.as_completed(future_process):
+        try:
+            exceptionThing = future_process[future]
+            tName, txp, tLevel = future.result()
+            totalxp.append(txp)
+            playerNames.append(tName)
+            totalLevels.append(tLevel)
+        except Exception as e:
+            print("ERROR:" + str(e))
+            continue
 
 totalxp, playerNames, totalLevels = zip(*sorted(zip(totalxp, playerNames, totalLevels)))
 temp = len(totalxp) - 1
@@ -98,7 +103,7 @@ while temp >= 0:
     temp -= 1
     rank += 1
 html += "</table></body></html>"
-# html+="</p><br><i><b>Note: This tracker updates once every 15 minutes or so, if it's not, please let Chris D know</b></i></body></html>"
 readOut = open('/var/www/html/'+outFileName, 'w')
 readOut.write(html)
 
+print("Users processed:" + str(len(totalxp)))
