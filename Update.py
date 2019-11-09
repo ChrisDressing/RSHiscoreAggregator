@@ -59,7 +59,7 @@ if sys.argv[1] != "":
 ts = time.time()
 locale.setlocale(locale.LC_ALL, '')
 readIn = open('/root/RSHiscoreAggregator/'+inFileName, 'r')
-data = readIn.reac().strip()
+data = readIn.read().strip()
 playerData = data.split(" ")
 total = -1
 totalxp = []
