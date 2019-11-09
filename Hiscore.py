@@ -1,14 +1,14 @@
-from lxml import html
+import html
 import requests
 from bs4 import BeautifulSoup
 import time
 import sys
 
-skillsList = [1]
+skillsList = [0]
 outFileName = "Initial.txt"
 if sys.argv[1] != "":
     if sys.argv[1] == "artisan":
-        skillsList = [7,10,12,13,14,16,21,23]
+        skillsList = [8,10,12,13,14,16,21,23]
         outFileName = "ArtisanInitial.txt"
     if sys.argv[1] == "combatant":
         skillsList = [1,2,3,4,5,6,7,24]
@@ -29,40 +29,42 @@ for name in playerList:
     page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
     data = page.text
     soup = BeautifulSoup(data, "lxml")
-    stats = str(soup.p.extract())
-    stats = stats.strip("<p>").strip("</p>")
-    statList = stats.split()
-    x = 0
-    total = 0
-    totalLevels = 0
-    # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
-    disq = False
-    attempts = 0
-    try:
-        for x in skillsList:
-            rank, level, xp = statList[x].split(',')
-            print(xp)
-            while int(xp) <= 0 and attempts < 3:
-                attempts += 1
-                time.sleep(1)
-                page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
-                data = page.text
-                soup = BeautifulSoup(data, "lxml")
-                stats = str(soup.p.extract())
-                stats = stats.strip("<p>").strip("</p>")
-                statList = stats.split()
+    if(soup.p is not None):
+        stats = str(soup.p.extract())
+        stats = stats.strip("<p>").strip("</p>")
+        statList = stats.split()
+        x = 0
+        total = 0
+        totalLevels = 0
+        # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
+        disq = False
+        attempts = 0
+        try:
+            for x in skillsList:
                 rank, level, xp = statList[x].split(',')
                 print(xp)
-            total += int(xp)
-            totalLevels += int(level)
-    except:
-        print("There was a problem with the current player " + name + "... Trying again")
-        disq = True
-    if disq is True:
-        out.write(name + "," + "D,D" + " ")
-        disq = False
-    else:
-        out.write(name + "," + str(total) + "," + str(totalLevels) + " ")
+                while int(xp) <= 0 and attempts < 3:
+                    attempts += 1
+                    time.sleep(1)
+                    page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
+                    data = page.text
+                    soup = BeautifulSoup(data, "lxml")
+                    stats = str(soup.p.extract())
+                    stats = stats.strip("<p>").strip("</p>")
+                    statList = stats.split()
+                    rank, level, xp = statList[x].split(',')
+                    print(xp)
+                total += int(xp)
+                totalLevels += int(level)
+        except:
+            print("There was a problem with the current player " + name + "... Trying again")
+            disq = True
+        if disq is True:
+            out.write(name + "," + "D,D" + " ")
+            print("Possible inactive player: " + name)
+            disq = False
+        else:
+            out.write(name + "," + str(total) + "," + str(totalLevels) + " ")
 f.close()
 out.close()
 '''
@@ -81,5 +83,5 @@ Fishing 11     | Invention 27
 Firemaking 12  |
 Crafting 13    |
 Smithing 14    |
-Mining 15      | 
+Mining 15      |
 '''

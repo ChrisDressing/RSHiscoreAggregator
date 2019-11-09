@@ -22,6 +22,7 @@ with fileinput.input('/root/RSHiscoreAggregator/members_lite.ws', openhook=filei
         else:
             temp=1
         #print(fileinput.filename())
-#g+="MadClikr\n"
+g+="Anastasia\nBradleyjs\nCoolgang333\nChaoscrysay\nComp_Sci\nDr_Raat\nEvaluate\nGoJess\nGunnur\nhallmark\nIcer\nIR_CyClonE\nJay_Is_Jay\nJe_ss_e\nJoeyy\nJurassic\nJustin_D\nLucasai\nMade_in_Cali\nNanett\nNeokid90\nPingu_Btw\nRe_Akshon18\nRegicidal\nRonjac\nShaunyowns\nSnicket69\nSuity\nTryhard_MCB\nXeriana"
+#g+="Emmett_Snake\n"
 out.write(g)
 out.close()

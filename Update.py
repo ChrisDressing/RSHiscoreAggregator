@@ -6,10 +6,10 @@ import requests
 from bs4 import BeautifulSoup
 import sys
 
-skillsList = [1]
+skillsList = [0]
 inFileName = "Initial.txt"
 outFileName = "standings.html"
-competitionName = "Mining"
+competitionName = "Double XP Weekend"
 if sys.argv[1] != "":
     if sys.argv[1] == "artisan":
         skillsList = [8,10,12,13,14,16,21,23]
@@ -89,7 +89,7 @@ html = """<!DOCTYPE html><head><script>
 </script></head><body><h1>Welcome to the Alright """ + competitionName +""" Competition!</h1><p>"""
 html += "<br><i><b>Note: This tracker updates once every 30 minutes or so, if it's not, please let Chris D know</b></i><br>"
 
-# ts = time.time()
+ts = time.time()
 st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 html += "Last updated (UTC): " + st + "</p><br><table align=\"center\"><tr><th>Rank</th><th colspan = '2'>Player</th><th>XP Gained</th><th>Levels Gained</th></tr>";
 while temp >= 0:
@@ -101,3 +101,4 @@ html += "</table></body></html>"
 # html+="</p><br><i><b>Note: This tracker updates once every 15 minutes or so, if it's not, please let Chris D know</b></i></body></html>"
 readOut = open('/var/www/html/'+outFileName, 'w')
 readOut.write(html)
+
