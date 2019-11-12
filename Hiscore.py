@@ -80,7 +80,7 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
             exceptionThing = future_process[future]
             finalStr += future.result()
         except Exception as e:
-            print("ERROR:" + str(e))
+            print(str(e) + "ERROR with player: " + exceptionThing)
             continue
 out.write(finalStr)
 f.close()
