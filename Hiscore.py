@@ -43,6 +43,7 @@ def process(name):
                     print("There was a problem with the current player " + name + "... Trying again")
                     if attempts < 3:
                         attempts += 1
+                        time.sleep(5)
                         continue
                     else:
                         disq = True
