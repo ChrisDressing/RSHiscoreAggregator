@@ -39,6 +39,7 @@ def process(name):
                         print(xp)
                     total += int(xp)
                     totalLevels += int(level)
+                    break
                 except:
                     print("There was a problem with the current player " + name + "... Trying again")
                     if attempts < 3:
