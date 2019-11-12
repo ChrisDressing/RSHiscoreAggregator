@@ -26,8 +26,7 @@ def process(name):
                 try:
                     rank, level, xp = statList[x].split(',')
                     print(xp)
-                    while int(xp) <= 0 and attempts < 3:
-                        attempts += 1
+                    while int(xp) <= 0:
                         time.sleep(1)
                         page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
                         data = page.text
@@ -43,6 +42,7 @@ def process(name):
                 except:
                     print("There was a problem with the current player " + name + "... Trying again")
                     if attempts < 3:
+                        attempts += 1
                         continue
                     else:
                         disq = True
