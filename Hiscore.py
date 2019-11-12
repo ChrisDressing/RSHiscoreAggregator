@@ -26,8 +26,8 @@ def process(name):
                 try:
                     rank, level, xp = statList[x].split(',')
                     print(xp)
-                    while int(xp) <= 0:
-                        time.sleep(1)
+                    while int(xp) <= 0 and attempts < 3:
+                        time.sleep(1); attempts+=1
                         page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
                         data = page.text
                         soup = BeautifulSoup(data, "lxml")
@@ -80,7 +80,7 @@ out = open('/root/RSHiscoreAggregator/'+outFileName, 'w')
 playerList = f.read().split()
 
 finalStr = ''
-with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
     future_process = {executor.submit(process, element): element for element in playerList}
     for future in concurrent.futures.as_completed(future_process):
         try:
