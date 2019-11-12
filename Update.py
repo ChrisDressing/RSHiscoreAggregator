@@ -35,6 +35,11 @@ inFileName = "Initial.txt"
 outFileName = "standings.html"
 competitionName = "Double XP Weekend"
 if sys.argv[1] != "":
+    if sys.argv[1] == "dxp":
+        skillsList = [0]
+        inFileName = "DxpInitial.txt"
+        outFileName = "dxpstandings.html"
+        competitionName = "Double XP Weekend"
     if sys.argv[1] == "artisan":
         skillsList = [8,10,12,13,14,16,21,23]
         inFileName = "ArtisanInitial.txt"

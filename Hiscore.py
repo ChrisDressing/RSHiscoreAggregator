@@ -51,6 +51,10 @@ def process(name):
 skillsList = [0]
 outFileName = "Initial.txt"
 if sys.argv[1] != "":
+    if sys.argv[1] == "dxp":
+        skillsList = [0]
+        outFileName = "DxpInitial.txt"
+        competitionName = "Double XP Weekend"
     if sys.argv[1] == "artisan":
         skillsList = [8,10,12,13,14,16,21,23]
         outFileName = "ArtisanInitial.txt"
