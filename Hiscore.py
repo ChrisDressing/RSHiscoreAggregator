@@ -21,26 +21,33 @@ def process(name):
         # 1 == Attack, 2 == Defence, 3 == Strength, 4 == Constitution, 5 == Ranged, 7 == Magic
         disq = False
         attempts = 0
-        try:
-            for x in skillsList:
-                rank, level, xp = statList[x].split(',')
-                print(xp)
-                while int(xp) <= 0 and attempts < 3:
-                    attempts += 1
-                    time.sleep(1)
-                    page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
-                    data = page.text
-                    soup = BeautifulSoup(data, "lxml")
-                    stats = str(soup.p.extract())
-                    stats = stats.strip("<p>").strip("</p>")
-                    statList = stats.split()
+        for x in skillsList:
+            while True:
+                try:
                     rank, level, xp = statList[x].split(',')
                     print(xp)
-                total += int(xp)
-                totalLevels += int(level)
-        except:
-            print("There was a problem with the current player " + name + "... Trying again")
-            disq = True
+                    while int(xp) <= 0 and attempts < 3:
+                        time.sleep(1); attempts+=1
+                        page = requests.get('http://services.runescape.com/m=hiscore/index_lite.ws?player=' + name)
+                        data = page.text
+                        soup = BeautifulSoup(data, "lxml")
+                        stats = str(soup.p.extract())
+                        stats = stats.strip("<p>").strip("</p>")
+                        statList = stats.split()
+                        rank, level, xp = statList[x].split(',')
+                        print(xp)
+                    total += int(xp)
+                    totalLevels += int(level)
+                    break
+                except:
+                    print("There was a problem with the current player " + name + "... Trying again")
+                    if attempts < 3:
+                        attempts += 1
+                        time.sleep(5)
+                        continue
+                    else:
+                        disq = True
+                        break
         if disq is True:
             print("Possible inactive player: " + name)
             return name + "," + "D,D" + " "
@@ -73,14 +80,14 @@ out = open('/root/RSHiscoreAggregator/'+outFileName, 'w')
 playerList = f.read().split()
 
 finalStr = ''
-with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
     future_process = {executor.submit(process, element): element for element in playerList}
     for future in concurrent.futures.as_completed(future_process):
         try:
             exceptionThing = future_process[future]
             finalStr += future.result()
         except Exception as e:
-            print("ERROR:" + str(e))
+            print("Inactive player: " + exceptionThing)
             continue
 out.write(finalStr)
 f.close()

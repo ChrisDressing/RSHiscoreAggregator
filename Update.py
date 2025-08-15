@@ -71,7 +71,7 @@ totalxp = []
 playerNames = []
 totalLevels = []
 
-with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
     future_process = {executor.submit(process, element): element for element in playerData}
     for future in concurrent.futures.as_completed(future_process):
         try:
